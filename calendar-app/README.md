@@ -49,13 +49,13 @@ npm run dev
 
 ## 🌐 Live Demo
 
-(Add your Vercel link here)
+https://calendar-app-rosy-kappa.vercel.app/
 
 ---
 
 ## 🎥 Demo Video
 
-(Add Loom / YouTube link here)
+//Link to be uploaded
 
 ---
 
