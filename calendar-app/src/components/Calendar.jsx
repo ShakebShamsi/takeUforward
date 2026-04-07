@@ -50,7 +50,7 @@ export default function Calendar() {
       isBefore(day, endDate);
 
    return (
-      <div className="w-full max-w-5xl max-h-[90vh] bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl overflow-hidden">
 
          {/* HERO IMAGE SECTION */}
          <div className="relative h-44 md:h-52 bg-white border-b">
