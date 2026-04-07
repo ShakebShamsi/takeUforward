@@ -1,6 +1,11 @@
-// components/Calendar.jsx
 import { useState, useEffect } from "react";
-import { format, isSameDay, isAfter, isBefore } from "date-fns";
+import clsx from "clsx";
+import {
+   format,
+   isSameDay,
+   isAfter,
+   isBefore,
+} from "date-fns";
 import { generateCalendar } from "../utils/calendar";
 import Day from "./Day";
 import Header from "./Header";
@@ -13,6 +18,16 @@ export default function Calendar() {
    const [notes, setNotes] = useState("");
 
    const days = generateCalendar(currentDate);
+
+   // localStorage (premium touch)
+   useEffect(() => {
+      const saved = localStorage.getItem("notes");
+      if (saved) setNotes(saved);
+   }, []);
+
+   useEffect(() => {
+      localStorage.setItem("notes", notes);
+   }, [notes]);
 
    const handleDayClick = (day) => {
       if (!startDate || (startDate && endDate)) {
@@ -34,46 +49,65 @@ export default function Calendar() {
       isAfter(day, startDate) &&
       isBefore(day, endDate);
 
-   // LOAD saved notes
-   useEffect(() => {
-      const saved = localStorage.getItem("notes");
-      if (saved) setNotes(saved);
-   }, []);
-
-   // SAVE notes
-   useEffect(() => {
-      localStorage.setItem("notes", notes);
-   }, [notes]);
-
-   // Save Selected Range
-   useEffect(() => {
-      if (startDate && endDate) {
-         localStorage.setItem("range", JSON.stringify({ startDate, endDate }));
-      }
-   }, [startDate, endDate]);
-
    return (
-      <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
+      <div className="w-full max-w-5xl max-h-[90vh] bg-white rounded-2xl shadow-xl overflow-hidden">
 
-         {/* HERO IMAGE */}
-         <div className="h-48 bg-[url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee')] bg-cover bg-center relative">
-            <div className="absolute bottom-4 right-4 text-white text-xl font-bold">
-               {format(currentDate, "MMMM yyyy")}
+         {/* HERO IMAGE SECTION */}
+         <div className="relative h-44 md:h-52 bg-white border-b">
+
+            {/* Spiral Binding Effect */}
+            <div className="absolute top-0 left-0 right-0 flex justify-center gap-2 py-2">
+               {Array.from({ length: 10 }).map((_, i) => (
+                  <div key={i} className="w-2 h-2 bg-gray-400 rounded-full"></div>
+               ))}
+            </div>
+
+            {/* Image */}
+            <img
+               src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+               className="w-full h-full object-cover"
+            />
+
+            {/* Overlay text */}
+            <div className="absolute bottom-4 right-6 text-white text-right">
+               <h1 className="text-3xl font-bold">
+                  {format(currentDate, "MMMM")}
+               </h1>
+               <p>{format(currentDate, "yyyy")}</p>
             </div>
          </div>
 
-         {/* CONTENT */}
-         <div className="p-4 grid md:grid-cols-3 gap-4">
+         {/* MAIN CONTENT */}
+         <div className="grid md:grid-cols-3 gap-4 p-4">
 
             {/* CALENDAR */}
             <div className="md:col-span-2">
                <Header currentDate={currentDate} setCurrentDate={setCurrentDate} />
 
-               <div className="grid grid-cols-7 gap-2 mt-4">
+               {/* Week Days */}
+               <div className="grid grid-cols-7 text-center text-sm font-semibold mt-4">
+                  {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d, i) => (
+                     <div
+                        key={d}
+                        className={clsx(
+                           i === 5 && "text-blue-500", // Saturday
+                           i === 6 && "text-red-500",  // Sunday
+                           i < 5 && "text-gray-500"
+                        )}
+                     >
+                        {d}
+                     </div>
+                  ))}
+               </div>
+
+               {/* Days */}
+               <div className="grid grid-cols-7 gap-2 mt-2">
                   {days.map((day, i) => (
                      <Day
                         key={i}
+                        index={i}   // ✅ ADD THIS
                         day={day}
+                        currentDate={currentDate}
                         onClick={handleDayClick}
                         isStart={startDate && isSameDay(day, startDate)}
                         isEnd={endDate && isSameDay(day, endDate)}
@@ -83,8 +117,11 @@ export default function Calendar() {
                </div>
             </div>
 
-            {/* NOTES */}
-            <Notes notes={notes} setNotes={setNotes} />
+            {/* NOTES PANEL */}
+            <div className="bg-gray-50 rounded-2xl p-4 shadow-inner">
+               <Notes notes={notes} setNotes={setNotes} />
+            </div>
+
          </div>
       </div>
    );

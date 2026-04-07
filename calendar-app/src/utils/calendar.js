@@ -1,4 +1,3 @@
-// utils/calendar.js
 import {
   startOfMonth,
   endOfMonth,
@@ -11,8 +10,8 @@ export const generateCalendar = (currentDate) => {
   const startMonth = startOfMonth(currentDate);
   const endMonth = endOfMonth(currentDate);
 
-  const startDate = startOfWeek(startMonth);
-  const endDate = endOfWeek(endMonth);
+  const startDate = startOfWeek(startMonth, { weekStartsOn: 1 }); // ✅ Monday
+  const endDate = endOfWeek(endMonth, { weekStartsOn: 1 });
 
   const days = [];
   let day = startDate;

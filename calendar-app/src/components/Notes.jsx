@@ -1,13 +1,24 @@
-// components/Notes.jsx
 export default function Notes({ notes, setNotes }) {
    return (
-      <div className="border rounded-xl p-3">
-         <h3 className="font-semibold mb-2">Notes</h3>
+      <div className="flex flex-col h-full">
+
+         {/* Header */}
+         <h3 className="font-semibold mb-2 text-gray-700">
+            Notes
+         </h3>
+
+         {/* Textarea */}
          <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full h-40 border rounded p-2"
-            placeholder="Write notes..."
+            placeholder="Write your notes..."
+            className="
+          w-full flex-1
+          p-3 rounded-xl border
+          text-sm
+          resize-none
+          focus:outline-none focus:ring-2 focus:ring-blue-400
+        "
          />
       </div>
    );
