@@ -55,7 +55,7 @@ https://calendar-app-rosy-kappa.vercel.app/
 
 ## 🎥 Demo Video
 
-//Link to be uploaded
+https://youtu.be/FTqdyJd232c?si=NkcOgLyP55bq_-PW
 
 ---
 
